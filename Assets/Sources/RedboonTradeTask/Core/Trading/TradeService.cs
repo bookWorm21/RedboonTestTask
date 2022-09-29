@@ -5,36 +5,46 @@ namespace Sources.RedboonTradeTask.Core.Trading
 {
     public class TradeService : ITradeService
     {
-        public bool TryBuy(ITrader player, ITrader trader, ItemModel buyingItem)
+        public ITrader Player { get; }
+
+        public ITrader Trader { get; }
+
+        public TradeService(ITrader player, ITrader trader)
         {
-            if (!trader.Inventory.CanTake(buyingItem))
+            Player = player;
+            Trader = trader;
+        }
+
+        public bool TryBuy(ItemModel buyingItem)
+        {
+            if (!Trader.Inventory.CanTake(buyingItem))
             {
                 return false;
             }
 
-            if (!player.Inventory.CanTake(buyingItem.Price.NeedItems))
+            if (!Player.Wallet.CanTake(buyingItem.Price.NeedItems))
             {
                 return false;
             }
             
-            trader.Inventory.Take(buyingItem);
-            trader.Inventory.Add(buyingItem.Price.NeedItems);
-            player.Inventory.Add(buyingItem);
+            Trader.Inventory.Take(buyingItem);
+            Trader.Wallet.Add(buyingItem.Price.NeedItems);
+            Player.Inventory.Add(buyingItem);
             buyingItem.ChangePrice(buyingItem.AfterBuyingPrice);
             
             return true;
         }
 
-        public bool TrySell(ITrader player, ITrader trader, ItemModel sellingItem)
+        public bool TrySell(ItemModel sellingItem)
         {
-            if (!player.Inventory.CanTake(sellingItem))
+            if (!Player.Inventory.CanTake(sellingItem))
             {
                 return false;
             }
 
-            player.Inventory.Take(sellingItem);
-            player.Inventory.Add(sellingItem.Price.NeedItems);
-            trader.Inventory.Add(sellingItem);
+            Player.Inventory.Take(sellingItem);
+            Player.Wallet.Add(sellingItem.Price.NeedItems);
+            Trader.Inventory.Add(sellingItem);
             
             return true;
         }

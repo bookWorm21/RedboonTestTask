@@ -4,12 +4,12 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
 {
     public class KitItem
     {
-        public ItemModel ItemModel { get; private set; }
+        public SourceItem SourceItem { get; private set; }
         public int Count { get; private set; }
 
-        public KitItem(ItemModel itemModel, int count)
+        public KitItem(SourceItem sourceItem, int count)
         {
-            ItemModel = itemModel;
+            SourceItem = sourceItem;
             Count = count;
         }
     }

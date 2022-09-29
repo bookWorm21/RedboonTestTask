@@ -1,42 +1,45 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Sources.RedboonTradeTask.Core.Trading.InventoryLogic.Extension;
 using Sources.RedboonTradeTask.Core.Trading.InventoryLogic.Models;
 
 namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
 {
     public class Inventory
     {
-        private Dictionary<ItemModel, int> _items;
+        private HashSet<ItemModel> _items;
 
         public Inventory()
         {
-            _items = new Dictionary<ItemModel, int>();
-        }
-        
-        public Inventory(IEnumerable<KitItem> items)
-        {
-            _items = items.ToDictionaryItems();
+            _items = new HashSet<ItemModel>();
         }
 
-        public bool TryTake(ItemModel item, int count = 1)
+        public Inventory(IEnumerable<ItemModel> models)
         {
-            if (CanTake(item, count))
+            _items = new HashSet<ItemModel>();
+            foreach (var model in models)
             {
-                Take(item, count);   
+                Add(model);
+            }
+        }
+
+        public bool TryTake(ItemModel item)
+        {
+            if (CanTake(item))
+            {
+                Take(item);   
                 return true;
             }
 
             return false;
         }
 
-        public bool TryTake(IEnumerable<KitItem> items)
+        public bool TryTake(IEnumerable<ItemModel> items)
         {
             var kitItems = items.ToArray();
             foreach (var item in kitItems)
             {
-                if (!CanTake(item.ItemModel, item.Count))
+                if (!CanTake(item))
                 {
                     return false;
                 }
@@ -47,17 +50,16 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
             return true;
         }
 
-        public bool CanTake(ItemModel item, int count = 1)
+        public bool CanTake(ItemModel item)
         {
-            int current = _items[item];
-            return current >= count;
+            return _items.Contains(item);
         }
         
-        public bool CanTake(IEnumerable<KitItem> items)
+        public bool CanTake(IEnumerable<ItemModel> items)
         {
-            foreach (var  item in items)
+            foreach (var item in items)
             {
-                if (!CanTake(item.ItemModel, item.Count))
+                if (!CanTake(item))
                 {
                     return false;
                 }
@@ -66,42 +68,33 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
             return true;
         }
         
-        public void Add(ItemModel item, int count = 1)
+        public void Add(ItemModel item)
         {
-            int oldCount = _items[item];
-            oldCount += count;
-            _items[item] = oldCount;
+            _items.Add(item);
         }
 
-        public void Add(IEnumerable<KitItem> items)
+        public void Add(IEnumerable<ItemModel> items)
         {
             foreach (var item in items)
             {
-                Add(item.ItemModel, item.Count);
+                Add(item);
             }
         }
 
-        public void Take(ItemModel item, int count = 1)
+        public void Take(ItemModel item)
         {
-            int oldCount = _items[item];
-            oldCount -= count;
-
-            if (oldCount < 0)
+            if (!_items.Contains(item))
             {
-                throw new Exception("Trying to take more");
+                throw new Exception("No required item");
             }
-            
-            if (oldCount == 0)
-            {
-                _items.Remove(item);
-            }
+            _items.Remove(item);
         }
         
-        public void Take(IEnumerable<KitItem> items)
+        public void Take(IEnumerable<ItemModel> items)
         {
             foreach (var item in items)
             {
-                Take(item.ItemModel, item.Count);
+                Take(item);
             }
         }
     }

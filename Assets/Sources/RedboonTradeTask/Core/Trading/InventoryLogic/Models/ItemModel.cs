@@ -4,20 +4,21 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic.Models
 {
     public class ItemModel
     {
+        public SourceItem SourceItem { get; private set; }
         public Sprite Icon { get; private set; }
         public Price Price { get; private set; }
-
         public Price AfterBuyingPrice { get; private set; }
         public ItemType ItemType { get; private set; }
         public string Name { get; private set; }
 
-        public ItemModel(Price price, Price afterBuyingPrice, string name, ItemType itemType, Sprite icon)
+        public ItemModel(SourceItem sourceItem)
         {
-            Icon = icon;
-            Price = price;
-            AfterBuyingPrice = afterBuyingPrice;
-            ItemType = itemType;
-            Name = name;
+            SourceItem = sourceItem;
+            Icon = sourceItem.Icon;
+            Price = sourceItem.Price;
+            AfterBuyingPrice = sourceItem.AfterBuyingPrice;
+            ItemType = sourceItem.ItemType;
+            Name = sourceItem.Name;
         }
 
         public void ChangePrice(Price price)

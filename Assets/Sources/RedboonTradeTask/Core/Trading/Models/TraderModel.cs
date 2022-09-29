@@ -5,13 +5,14 @@ namespace Sources.RedboonTradeTask.Core.Trading.Models
 {
     public class TraderModel : ITrader
     {
-        private Inventory _inventory;
+        public Inventory Inventory { get; }
 
-        public Inventory Inventory => _inventory;
+        public Wallet Wallet { get; }
 
-        public TraderModel(Inventory inventory)
+        public TraderModel(Inventory inventory, Wallet wallet)
         {
-            _inventory = inventory;
+            Inventory = inventory;
+            Wallet = wallet;
         }
     }
 }

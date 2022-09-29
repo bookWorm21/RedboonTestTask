@@ -5,5 +5,6 @@ namespace Sources.RedboonTradeTask.Core.Trading.Interfaces
     public interface ITrader
     {
         public Inventory Inventory { get; }
+        public Wallet Wallet { get; }
     }
 }
