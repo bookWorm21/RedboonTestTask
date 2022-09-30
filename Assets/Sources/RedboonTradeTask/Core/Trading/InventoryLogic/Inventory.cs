@@ -9,6 +9,8 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
     {
         private HashSet<ItemModel> _items;
 
+        public IEnumerable<ItemModel> Items => _items;
+
         public Inventory()
         {
             _items = new HashSet<ItemModel>();

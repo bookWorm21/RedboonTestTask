@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae826c5d80ab2db4ead956f92f5cd097, type: 3}
+  m_Name: TraderData
+  m_EditorClassIdentifier: 
+  _startItems:
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: 3b68dde3b55d0154c99cbf65f48d4018, type: 2}
+    <Count>k__BackingField: 5
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: c577681943f500a4f9a2dd6eea2ea217, type: 2}
+    <Count>k__BackingField: 4
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: 5301565d675939b4daf4d396be9eaf59, type: 2}
+    <Count>k__BackingField: 1
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: d8585b9c831755b43baee416db82905c, type: 2}
+    <Count>k__BackingField: 1
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: 41998e5a136a4df4081f0e4911f7eb51, type: 2}
+    <Count>k__BackingField: 4
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: ff70c92707ef5e54885727fcc1e8a07f, type: 2}
+    <Count>k__BackingField: 2
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: 3be87855822f2ce4cb6e2f2eb88be300, type: 2}
+    <Count>k__BackingField: 1
+  _startCurrencyItems:
+  - <ItemData>k__BackingField: {fileID: 11400000, guid: 818c03161874f1147b450d5a430ca0eb, type: 2}
+    <Count>k__BackingField: 100

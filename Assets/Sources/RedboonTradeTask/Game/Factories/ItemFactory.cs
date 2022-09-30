@@ -14,6 +14,7 @@ namespace Sources.RedboonTradeTask.Game.Factories
         public ItemFactory(IEnumerable<ItemData> currencyItems)
         {
             _allSourceCreatedItems = new Dictionary<ItemData, SourceItem>();
+            _allValuteItems = new Dictionary<ItemData, ItemModel>();
             foreach(var currency in currencyItems.Where(p=>p.ItemType == ItemType.Resource))
             {
                 CreateItem(currency);
@@ -29,10 +30,10 @@ namespace Sources.RedboonTradeTask.Game.Factories
                     return _allValuteItems[itemData];
                 }
 
-                Price price = new Price();
-                SourceItem source = 
+                var price = new Price();
+                var source = 
                     new SourceItem(price, price, itemData.Name, itemData.ItemType, itemData.Icon);
-                ItemModel model = new ItemModel(source);
+                var model = new ItemModel(source);
 
                 _allSourceCreatedItems.Add(itemData, source);
                 _allValuteItems.Add(itemData, model);

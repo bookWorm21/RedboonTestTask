@@ -3,6 +3,7 @@ using Sources.RedboonTradeTask.Core.Trading;
 using Sources.RedboonTradeTask.Core.Trading.Interfaces;
 using Sources.RedboonTradeTask.Game.Data;
 using Sources.RedboonTradeTask.Game.Factories;
+using Sources.RedboonTradeTask.GUI;
 using UnityEngine;
 
 namespace Sources.RedboonTradeTask.Game
@@ -11,6 +12,7 @@ namespace Sources.RedboonTradeTask.Game
     {
         [SerializeField] private GameWorldData _gameWorldData;
         [SerializeField] private List<ItemData> _allItemDatas;
+        [SerializeField] private TradeVisualizationWindow _tradeVisualizationWindow;
 
         private void Start()
         {
@@ -22,6 +24,8 @@ namespace Sources.RedboonTradeTask.Game
             var trader = traderFactory.CreateTrader(_gameWorldData.TraderData);
 
             ITradeService tradeService = new TradeService(player, trader);
+
+            _tradeVisualizationWindow.Init(tradeService);
         }
     }
 }

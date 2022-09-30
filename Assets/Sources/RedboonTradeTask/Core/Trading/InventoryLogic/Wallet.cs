@@ -10,14 +10,22 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
     {
         private Dictionary<SourceItem, int> _items;
 
+        public bool IsBottomless { get; private set; }
+        
+        public IEnumerable<KitItem> Items => _items.ToKitItems();
+        
+        public event Action Changed;
+        
         public Wallet()
         {
             _items = new Dictionary<SourceItem, int>();
+            IsBottomless = false;
         }
         
-        public Wallet(IEnumerable<KitItem> items)
+        public Wallet(IEnumerable<KitItem> items, bool isBottomless = false)
         {
             _items = items.ToDictionaryItems();
+            IsBottomless = isBottomless;
         }
 
         public bool TryTake(SourceItem item, int count = 1)
@@ -71,6 +79,8 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
             int oldCount = _items[item];
             oldCount += count;
             _items[item] = oldCount;
+            
+            Changed?.Invoke();
         }
 
         public void Add(IEnumerable<KitItem> items)
@@ -86,17 +96,16 @@ namespace Sources.RedboonTradeTask.Core.Trading.InventoryLogic
             int oldCount = _items[item];
             oldCount -= count;
 
-            if (oldCount < 0)
+            if (!IsBottomless && oldCount < 0)
             {
                 throw new Exception("Trying to take more");
             }
-            
-            if (oldCount == 0)
-            {
-                _items.Remove(item);
-            }
+
+            _items[item] = oldCount;
+
+            Changed?.Invoke();
         }
-        
+
         public void Take(IEnumerable<KitItem> items)
         {
             foreach (var item in items)

@@ -1,5 +1,8 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
 using Sources.RedboonTradeTask.Core.Trading.InventoryLogic;
+using Sources.RedboonTradeTask.Core.Trading.InventoryLogic.Models;
 using Sources.RedboonTradeTask.Core.Trading.Models;
 using Sources.RedboonTradeTask.Game.Data;
 
@@ -16,7 +19,16 @@ namespace Sources.RedboonTradeTask.Game.Factories
 
         public PlayerModel CreatePlayer(PlayerData playerData)
         {
-            var items = playerData.StartItems.Select(p => _itemFactory.CreateItem(p));
+            var items = new List<ItemModel>();
+
+            foreach (var kitItem in playerData.StartItems)
+            {
+                for (int i = 0; i < kitItem.Count; ++i)
+                {
+                    items.Add(_itemFactory.CreateItem(kitItem.ItemData));
+                }
+            }
+            
             var currencies =
                 playerData.StartCurrencyItems.Select(p => 
                     new KitItem(_itemFactory.CreateItem(p.ItemData).SourceItem, p.Count));

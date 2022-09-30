@@ -30,6 +30,7 @@ namespace Sources.RedboonTradeTask.Core.Trading
             Trader.Inventory.Take(buyingItem);
             Trader.Wallet.Add(buyingItem.Price.NeedItems);
             Player.Inventory.Add(buyingItem);
+            Player.Wallet.Take(buyingItem.Price.NeedItems);
             buyingItem.ChangePrice(buyingItem.AfterBuyingPrice);
             
             return true;
@@ -45,6 +46,7 @@ namespace Sources.RedboonTradeTask.Core.Trading
             Player.Inventory.Take(sellingItem);
             Player.Wallet.Add(sellingItem.Price.NeedItems);
             Trader.Inventory.Add(sellingItem);
+            Trader.Wallet.Take(sellingItem.Price.NeedItems);
             
             return true;
         }
