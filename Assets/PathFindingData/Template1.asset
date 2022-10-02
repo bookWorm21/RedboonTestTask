@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 468cffb8b66ac194c98d8f758db3423e, type: 3}
+  m_Name: Template1
+  m_EditorClassIdentifier: 
+  ScaleFactor: 2.5
+  A: {x: 8, y: 5}
+  C: {x: 33, y: 6}
+  Edges:
+  - First:
+      Min: {x: 3, y: 0}
+      Max: {x: 8, y: 10}
+    Second:
+      Min: {x: 0, y: 10}
+      Max: {x: 12, y: 18}
+    Start: {x: 3, y: 10}
+    End: {x: 8, y: 10}
+  - First:
+      Min: {x: 0, y: 10}
+      Max: {x: 12, y: 18}
+    Second:
+      Min: {x: 12, y: 5}
+      Max: {x: 17, y: 22}
+    Start: {x: 12, y: 10}
+    End: {x: 12, y: 18}
+  - First:
+      Min: {x: 12, y: 5}
+      Max: {x: 17, y: 22}
+    Second:
+      Min: {x: 17, y: 6}
+      Max: {x: 26, y: 14}
+    Start: {x: 17, y: 6}
+    End: {x: 17, y: 14}
+  - First:
+      Min: {x: 17, y: 6}
+      Max: {x: 26, y: 14}
+    Second:
+      Min: {x: 26, y: 1}
+      Max: {x: 33, y: 10}
+    Start: {x: 26, y: 6}
+    End: {x: 26, y: 10}
