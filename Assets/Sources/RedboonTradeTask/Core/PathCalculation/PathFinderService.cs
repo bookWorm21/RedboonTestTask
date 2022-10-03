@@ -28,76 +28,74 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation
         public IEnumerable<Vector2> GetPath(Vector2 a, Vector2 c, IEnumerable<Edge> edges)
         {
             var edgesArray = edges.ToArray();
-            
+
             if (!Valudate(a, c, edgesArray))
             {
                 return new List<Vector2>();
             }
 
-            var infoPath = new List<PointInfo>(edgesArray.Length);
-
-            infoPath.Add(
+            var infoPath = new List<PointInfo>(edgesArray.Length)
+            {
                 new PointInfo
                 {
-                    Point = a, 
-                    EdgeHaving = EdgeHaving.First, 
+                    Point = a,
+                    EdgeHaving = EdgeHaving.First,
                     FirstEdge = edgesArray.First(),
-                });
-            
+                }
+            };
+
             var currentPoint = a;
-            
+
             for (var i = 0; i < edgesArray.Length; i++)
             {
                 EdgeHaving edgeHaving = EdgeHaving.Second;
                 Edge secondEdge = edgesArray[i];
                 var firstEdge = new Edge();
-                
+
                 if (i != edgesArray.Length - 1)
                 {
                     firstEdge = edgesArray[i + 1];
                     edgeHaving = EdgeHaving.Both;
-                    
+
                     if (IsEdgesOnOneSide(edgesArray[i], edgesArray[i + 1]))
                     {
                         currentPoint = NearestPoint(currentPoint, edgesArray[i].Second);
                         infoPath.Add(
                             new PointInfo
                             {
-                                Point = currentPoint, 
-                                EdgeHaving = edgeHaving, 
+                                Point = currentPoint,
+                                EdgeHaving = edgeHaving,
                                 FirstEdge = firstEdge,
-                                SecondEdge =  secondEdge,
+                                SecondEdge = secondEdge,
                             });
-                    }                                                              
+                    }
                 }
 
                 currentPoint = NearestPoint(currentPoint, edgesArray[i]);
                 infoPath.Add(
                     new PointInfo
                     {
-                        Point = currentPoint, 
-                        EdgeHaving = edgeHaving, 
+                        Point = currentPoint,
+                        EdgeHaving = edgeHaving,
                         FirstEdge = firstEdge,
-                        SecondEdge =  secondEdge,
+                        SecondEdge = secondEdge,
                     });
             }
-            
+
             infoPath.Add(
                 new PointInfo
                 {
-                    Point = c, 
+                    Point = c,
                     EdgeHaving = EdgeHaving.Second,
-                    SecondEdge =  edgesArray.Last(),
+                    SecondEdge = edgesArray.Last(),
                 });
 
             ReductionPathPointsWithDeletePoint(infoPath);
-            if (ReductionPathPointsWithUnionTwoPoint(infoPath))
-            {
-                ReductionPathPointsWithDeletePoint(infoPath);
-            }
+            ReductionPathPointsWithUnionTwoPoint(infoPath);
+
             return infoPath.Select(p => p.Point);
         }
-        
+
         private bool Valudate(Vector2 a, Vector2 c, Edge[] edges)
         {
             if (!edges.Any())
@@ -117,7 +115,11 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation
 
             for (int i = 0; i < edges.Length - 1; ++i)
             {
-                if (!Equals(edges[i].Second, edges[i + 1].First))
+                //edges equal
+                if(System.Math.Abs(edges[i].Start.x - edges[i+1].Start.x) < ExtendedMath.Eps &&
+                   System.Math.Abs(edges[i].Start.y - edges[i+1].Start.y) < ExtendedMath.Eps &&
+                   System.Math.Abs(edges[i].End.x - edges[i+1].End.x) < ExtendedMath.Eps &&
+                   System.Math.Abs(edges[i].End.y - edges[i+1].End.y) < ExtendedMath.Eps)
                 {
                     return false;
                 }
@@ -138,12 +140,11 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation
                 var lineSegment1 = new ExtendedMath.LineSegment(point1.Point, point2.Point);
                 var lineSegment2 = new ExtendedMath.LineSegment(point1.FirstEdge.Start, point1.FirstEdge.End);
                 var lineSegment3 = new ExtendedMath.LineSegment(point2.SecondEdge.Start, point2.SecondEdge.End);
-
-                bool edgeThrough1 = ExtendedMath.Intersect(lineSegment1.A, lineSegment1.B, lineSegment2.A, lineSegment2.B, 
-                    out _, out _);
-                bool edgeThrough2 = ExtendedMath.Intersect(lineSegment1.A, lineSegment1.B, lineSegment3.A, lineSegment3.B, 
-                    out _, out _);
-                if ( edgeThrough1 && edgeThrough2)
+                
+                if ( ExtendedMath.Intersect(lineSegment1.A, lineSegment1.B, lineSegment2.A, lineSegment2.B, 
+                        out _, out _) &&
+                     ExtendedMath.Intersect(lineSegment1.A, lineSegment1.B, lineSegment3.A, lineSegment3.B, 
+                         out _, out _))
                 {
                     path.RemoveAt(i + 1);
                     --i;
@@ -218,10 +219,10 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation
             var leftTopVertex = new Vector2(rectangle.Min.x, rectangle.Max.y);
             var rightBottomVertex = new Vector2(rectangle.Max.x, rectangle.Min.y);
 
-            Vector2 point1 = ((leftTopVertex + rectangle.Min) / 2 + center) / 2;
-            Vector2 point2 = ((rightBottomVertex + rectangle.Max) / 2 + center) / 2;
-            Vector2 point3 = ((rectangle.Min + rightBottomVertex) / 2 + center) / 2;
-            Vector2 point4 = ((leftTopVertex + rectangle.Max) / 2 + center) / 2;
+            Vector2 point1 = (leftTopVertex + rectangle.Min) * 0.25f + center * 0.5f;
+            Vector2 point2 = (rightBottomVertex + rectangle.Max) * 0.25f + center * 0.5f;
+            Vector2 point3 = (rectangle.Min + rightBottomVertex) * 0.25f+ center * 0.5f;
+            Vector2 point4 = (leftTopVertex + rectangle.Max) * 0.25f + center * 0.5f;
 
             CheckForBestPoint(point1);
             CheckForBestPoint(point2);

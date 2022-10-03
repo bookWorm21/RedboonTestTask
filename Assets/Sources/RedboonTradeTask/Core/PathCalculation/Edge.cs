@@ -1,8 +1,9 @@
+using System;
 using UnityEngine;
 
 namespace Sources.RedboonTradeTask.Core.PathCalculation
 {
-    [System.Serializable]
+    [Serializable]
     public struct Edge
     {
         public Rectangle First;

@@ -5,7 +5,7 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation.Helpful.ExtendedMath
 {
     public static class ExtendedMath
     {
-        public const double Eps = 1E-5;
+        public const double Eps = 1E-9;
         
         public struct Line
         {
@@ -22,8 +22,8 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation.Helpful.ExtendedMath
 
             public void Normalized()
             {
-                double z = System.Math.Sqrt(A * A + B * B);
-                if (System.Math.Abs(z) > Eps)
+                double z = Math.Sqrt(A * A + B * B);
+                if (Math.Abs(z) > Eps)
                 {
                     A /= z;
                     B /= z;
@@ -64,7 +64,7 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation.Helpful.ExtendedMath
             if (a > b) (a, b) = (b, a);
             if (c > d) (c, d) = (d, c);
 
-            return Mathf.Max(a, c) <= Mathf.Min(b, d) + Eps;
+            return Math.Max(a, c) <= Math.Min(b, d) + Eps;
         }
 
         public static bool IsParallel(Line m, Line n)
@@ -87,9 +87,7 @@ namespace Sources.RedboonTradeTask.Core.PathCalculation.Helpful.ExtendedMath
                 res = Vector2.zero;
                 return false;
             }
-
-            double test = -Deter(m.C, m.B, n.C, n.B) / zn;
-            double test2 = -Deter(m.A, m.C, n.A, n.C) / zn;
+            
             res.x = (float) (-Deter(m.C, m.B, n.C, n.B) / zn);
             res.y = (float) (-Deter(m.A, m.C, n.A, n.C) / zn);
             return true;
